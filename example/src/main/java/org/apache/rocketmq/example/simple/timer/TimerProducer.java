@@ -46,17 +46,17 @@ public class TimerProducer {
         producer.start();
             try {
                 LocalDate localDate = LocalDate.now();
-                LocalTime localTime = LocalTime.of(10, 40, 30);
+                LocalTime localTime = LocalTime.of(16, 50, 30);
                 LocalDateTime dateTime = LocalDateTime.of(localDate, localTime);
                 long milliseconds = dateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli();
-
+                log.info("时间:{}", milliseconds);
                 Message msg = new Message("TopicTest",
                     "TagA",
                     "OrderID188",
                     "Hello world".getBytes(RemotingHelper.DEFAULT_CHARSET));
                 msg.setDeliverTimeMs(milliseconds);
                 SendResult sendResult = producer.send(msg);
-                System.out.println(sendResult.getOffsetMsgId());
+
                 log.info("打印结果:{}", sendResult.getOffsetMsgId());
 
 
