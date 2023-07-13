@@ -18,11 +18,8 @@
 package org.apache.rocketmq.example.batch;
 
 import com.google.common.base.Stopwatch;
-import org.apache.rocketmq.client.exception.MQBrokerException;
-import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
-import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,8 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class SimpleBatchProducerTime {
-    private static final Logger log = LoggerFactory.getLogger(SimpleBatchProducerTime.class);
+public class SimpleBatchLocalProducerTime {
+    private static final Logger log = LoggerFactory.getLogger(SimpleBatchLocalProducerTime.class);
 
     public static void main(String[] args) throws Exception {
         DefaultMQProducer producer = new DefaultMQProducer("BatchProducerGroupName");
