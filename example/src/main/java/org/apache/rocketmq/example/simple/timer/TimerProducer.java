@@ -17,21 +17,27 @@
 package org.apache.rocketmq.example.simple.timer;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.client.producer.SendResult;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.temporal.TemporalField;
 
-@Slf4j
-public class TimerProducer {
 
+public class TimerProducer {
+    private static final Logger log = LoggerFactory.getLogger(TimerProducer.class);
 
     public static void main(String[] args) throws MQClientException, InterruptedException {
 
@@ -40,7 +46,7 @@ public class TimerProducer {
         producer.start();
             try {
                 LocalDate localDate = LocalDate.now();
-                LocalTime localTime = LocalTime.of(10, 25, 30);
+                LocalTime localTime = LocalTime.of(10, 40, 30);
                 LocalDateTime dateTime = LocalDateTime.of(localDate, localTime);
                 long milliseconds = dateTime.toInstant(ZoneOffset.of("+8")).toEpochMilli();
 
@@ -48,8 +54,9 @@ public class TimerProducer {
                     "TagA",
                     "OrderID188",
                     "Hello world".getBytes(RemotingHelper.DEFAULT_CHARSET));
-                msg.putUserProperty("deliverTimeStamp", String.valueOf(milliseconds));
+                msg.setDeliverTimeMs(milliseconds);
                 SendResult sendResult = producer.send(msg);
+                System.out.println(sendResult.getOffsetMsgId());
                 log.info("打印结果:{}", sendResult.getOffsetMsgId());
 
 
