@@ -60,7 +60,7 @@ public class TimerPullConsumer {
 
                 public void doSomething(List<MessageExt> msgs) {
                     //do your business
-                    log.info("获取消费消息:{}", JSONObject.toJSON(msgs));
+                    log.info("获取消费消息:{}",msgs);
                 }
 
                 @Override
