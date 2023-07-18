@@ -16,11 +16,14 @@
  */
 package org.apache.rocketmq.example.schedule;
 
+import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.common.message.MessageExt;
 
+@Slf4j
 public class TimerMessageConsumer {
     public static final String CONSUMER_GROUP = "TimerMessageConsumerGroup";
     public static final String DEFAULT_NAMESRVADDR = "127.0.0.1:9876";
@@ -31,7 +34,7 @@ public class TimerMessageConsumer {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(CONSUMER_GROUP);
 
         // Uncomment the following line while debugging, namesrvAddr should be set to your local address
-//        consumer.setNamesrvAddr(DEFAULT_NAMESRVADDR);
+        consumer.setNamesrvAddr(DEFAULT_NAMESRVADDR);
 
         // Subscribe topics
         consumer.subscribe(TOPIC, "*");
@@ -39,8 +42,9 @@ public class TimerMessageConsumer {
         consumer.registerMessageListener((MessageListenerConcurrently) (messages, context) -> {
             for (MessageExt message : messages) {
                 // Print approximate delay time period
-                System.out.printf("Receive message[msgId=%s %d  ms later]\n", message.getMsgId(),
-                    System.currentTimeMillis() - message.getBornTimestamp());
+//                System.out.printf("Receive message[msgId=%s %d  ms later]\n", message.getMsgId(),
+//                    System.currentTimeMillis() - message.getBornTimestamp());
+                log.info("receive message:{}", JSONObject.toJSONString(message));
             }
             return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
         });
