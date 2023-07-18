@@ -34,7 +34,7 @@ public class TimerMessageConsumer {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(CONSUMER_GROUP);
 
         // Uncomment the following line while debugging, namesrvAddr should be set to your local address
-//        consumer.setNamesrvAddr(DEFAULT_NAMESRVADDR);
+        consumer.setNamesrvAddr(DEFAULT_NAMESRVADDR);
 
         // Subscribe topics
         consumer.subscribe(TOPIC, "*");
@@ -44,6 +44,7 @@ public class TimerMessageConsumer {
                 // Print approximate delay time period
                 System.out.printf("Receive message[msgId=%s %d  ms later]\n", message.getMsgId(),
                     System.currentTimeMillis() - message.getBornTimestamp());
+//                System.out.println(message);
             }
             return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
         });

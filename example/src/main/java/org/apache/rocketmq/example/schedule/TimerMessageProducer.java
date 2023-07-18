@@ -34,7 +34,7 @@ public class TimerMessageProducer {
         DefaultMQProducer producer = new DefaultMQProducer(PRODUCER_GROUP);
 
         // Uncomment the following line while debugging, namesrvAddr should be set to your local address
-//        producer.setNamesrvAddr(DEFAULT_NAMESRVADDR);
+        producer.setNamesrvAddr(DEFAULT_NAMESRVADDR);
 
         // Launch producer
         producer.start();
@@ -42,11 +42,11 @@ public class TimerMessageProducer {
         for (int i = 0; i < totalMessagesToSend; i++) {
             Message message = new Message(TOPIC, ("Hello scheduled message " + i).getBytes(StandardCharsets.UTF_8));
             // This message will be delivered to consumer 10 seconds later.
-            //message.setDelayTimeSec(10);
+            message.setDelayTimeSec(10);
             // The effect is the same as the above
-            // message.setDelayTimeMs(10_000L);
+//             message.setDelayTimeMs(10_000L);
             // Set the specific delivery time, and the effect is the same as the above
-            message.setDeliverTimeMs(System.currentTimeMillis() + 10_000L);
+//            message.setDeliverTimeMs(System.currentTimeMillis() + 10_000L);
             // Send the message
             SendResult result = producer.send(message);
             System.out.printf(result + "\n");
