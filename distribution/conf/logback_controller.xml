@@ -19,10 +19,10 @@
 <configuration>
     <appender name="DefaultAppender"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${user.home}/logs/rocketmqlogs/controller_default.log</file>
+        <file>./distribution/logs/rocketmqlogs/controller_default.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>${user.home}/logs/rocketmqlogs/otherdays/controller_default.%i.log.gz</fileNamePattern>
+            <fileNamePattern>./distribution/logs/rocketmqlogs/otherdays/controller_default.%i.log.gz</fileNamePattern>
             <minIndex>1</minIndex>
             <maxIndex>5</maxIndex>
         </rollingPolicy>
@@ -38,10 +38,10 @@
 
     <appender name="RocketmqControllerAppender_inner"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${user.home}/logs/rocketmqlogs/controller.log</file>
+        <file>./distribution/logs/rocketmqlogs/controller.log</file>
         <append>true</append>
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-            <fileNamePattern>${user.home}/logs/rocketmqlogs/otherdays/controller.%i.log.gz</fileNamePattern>
+            <fileNamePattern>./distribution/logs/rocketmqlogs/otherdays/controller.%i.log.gz</fileNamePattern>
             <minIndex>1</minIndex>
             <maxIndex>5</maxIndex>
         </rollingPolicy>
