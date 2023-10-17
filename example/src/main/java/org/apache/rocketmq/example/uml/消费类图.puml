@@ -1,0 +1,68 @@
+@startuml
+interface MQAdmin {
+    + void createTopic()
+    + void minOffset()
+    + void maxOffset()
+}
+interface MQConsumer {
+    + void start()
+    + void shutdown()
+}
+interface MQPushConsumer {
+    + void start()
+    + void shutdown()
+}
+interface MQConsumerInner {
+    + Set<SubscriptionData> subscriptions()
+    + void doRebalance()
+}
+abstract class RebalanceImpl {
+    # AllocateMessageQueueStrategy allocateMessageQueueStrategy
+    # ConcurrentMap<String, SubscriptionData> subscriptionInner
+    # ConcurrentMap<MessageQueue, ProcessQueue> processQueueTable
+    + void doRebalance()
+    + void rebalanceByTopic()
+}
+class RebalancePushImpl {
+    # DefaultMQPushConsumerImpl defaultMQPushConsumerImpl
+}
+class ClientConfig {
+    # String clientIP
+    # String instanceName
+    + void buildMQClientId()
+    + void getInstanceName()
+}
+class DefaultMQPushConsumerImpl {
+    # RebalanceImpl rebalanceImpl
+    # OffsetStore offsetStore
+    # MQClientInstance mQClientFactory
+    # DefaultMQPushConsumer defaultMQPushConsumer
+    + void pullMessage()
+    + long minOffset()
+}
+class DefaultMQPushConsumer {
+    # DefaultMQPushConsumerImpl defaultMQPushConsumerImpl
+    # String consumerGroup
+    # MessageModel messageModel
+    + void start()
+    + void shutdown()
+}
+class MQClientInstance {
+    # ConcurrentMap<String, MQConsumerInner> consumerTable
+}
+class SubscriptionData {
+    # Set<String> tagsSet
+    # String topic
+}
+
+MQPushConsumer <|.. DefaultMQPushConsumer
+MQConsumer <|-- MQPushConsumer
+MQAdmin <|-- MQConsumer
+ClientConfig <|-- DefaultMQPushConsumer
+MQConsumerInner <|.. DefaultMQPushConsumerImpl
+DefaultMQPushConsumerImpl --> DefaultMQPushConsumer
+RebalancePushImpl --|> RebalanceImpl
+RebalancePushImpl --> DefaultMQPushConsumerImpl
+MQClientInstance --> DefaultMQPushConsumerImpl
+SubscriptionData --> RebalanceImpl
+@enduml

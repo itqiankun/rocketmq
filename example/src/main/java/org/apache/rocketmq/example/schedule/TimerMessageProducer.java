@@ -1,19 +1,4 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+
 package org.apache.rocketmq.example.schedule;
 
 import java.nio.charset.StandardCharsets;
@@ -32,29 +17,17 @@ public class TimerMessageProducer {
     public static final String TOPIC = "TimerTopic";
 
     public static void main(String[] args) throws Exception {
-        // Instantiate a producer to send scheduled messages
         DefaultMQProducer producer = new DefaultMQProducer(PRODUCER_GROUP);
-
-        // Uncomment the following line while debugging, namesrvAddr should be set to your local address
         producer.setNamesrvAddr(DEFAULT_NAMESRVADDR);
-
-        // Launch producer
         producer.start();
-        int totalMessagesToSend = 10;
+        int totalMessagesToSend = 2;
         for (int i = 0; i < totalMessagesToSend; i++) {
             Message message = new Message(TOPIC, ("Hello scheduled message " + i).getBytes(StandardCharsets.UTF_8));
-            // This message will be delivered to consumer 10 seconds later.   这个有问题。
-//            message.setDelayTimeSec(10);
-            // The effect is the same as the above  这个也有问题。
-//             message.setDelayTimeMs(10_000L);
-            // Set the specific delivery time, and the effect is the same as the above   这个成功了。
-            message.setDeliverTimeMs(System.currentTimeMillis() + 10_000L);
-            // Send the message
+            // 1分钟后执行
+            message.setDeliverTimeMs(System.currentTimeMillis() + 1L * 60 * 1000);
             SendResult result = producer.send(message);
             log.info("send message result:{}", JSONObject.toJSONString(result));
         }
-
-        // Shutdown producer after use.
         producer.shutdown();
     }
 }
