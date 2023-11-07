@@ -5,6 +5,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.rocketmq.client.log.ClientLogger;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.MQVersion;
 import org.apache.rocketmq.common.MixAll;
 import org.apache.rocketmq.common.UtilAll;
@@ -22,6 +23,8 @@ import org.apache.rocketmq.remoting.RPCHook;
 import org.apache.rocketmq.tools.admin.DefaultMQAdminExt;
 import org.apache.rocketmq.tools.command.SubCommand;
 import org.apache.rocketmq.tools.command.SubCommandException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.Date;
@@ -31,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ConsumerProgressSubCommand implements SubCommand {
-    private final InternalLogger log = ClientLogger.getLog();
+    private final static Logger log = LoggerFactory.getLogger(ConsumerProgressSubCommand.class);
 
     @Override
     public String commandName() {

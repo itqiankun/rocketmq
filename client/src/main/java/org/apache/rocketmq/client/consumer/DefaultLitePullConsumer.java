@@ -8,6 +8,7 @@ import java.util.Set;
 import org.apache.rocketmq.client.ClientConfig;
 import org.apache.rocketmq.client.consumer.rebalance.AllocateMessageQueueAveragely;
 import org.apache.rocketmq.client.consumer.store.OffsetStore;
+import org.apache.rocketmq.client.consumer.store.RemoteBrokerOffsetStore;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.impl.consumer.DefaultLitePullConsumerImpl;
 import org.apache.rocketmq.client.log.ClientLogger;
@@ -23,10 +24,12 @@ import org.apache.rocketmq.common.protocol.NamespaceUtil;
 import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
 import org.apache.rocketmq.logging.InternalLogger;
 import org.apache.rocketmq.remoting.RPCHook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DefaultLitePullConsumer extends ClientConfig implements LitePullConsumer {
 
-    private final InternalLogger log = ClientLogger.getLog();
+    private final static Logger log = LoggerFactory.getLogger(DefaultLitePullConsumer.class);
 
     private final DefaultLitePullConsumerImpl defaultLitePullConsumerImpl;
 

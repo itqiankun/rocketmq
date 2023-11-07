@@ -26,7 +26,7 @@ public class ConsumerPullTwo {
         consumer.setNamesrvAddr("127.0.0.1:9876");
         Set<String> topics = new HashSet<>();
         //You would better to register topics,It will use in rebalance when starting
-        topics.add("om-huizhi-topic-cut");
+        topics.add("topic");
         consumer.setRegisterTopics(topics);
         consumer.start();
 

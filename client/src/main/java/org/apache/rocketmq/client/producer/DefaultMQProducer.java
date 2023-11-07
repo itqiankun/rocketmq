@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import org.apache.rocketmq.client.ClientConfig;
 import org.apache.rocketmq.client.QueryResult;
 import org.apache.rocketmq.client.Validators;
+import org.apache.rocketmq.client.consumer.MQPullConsumerScheduleService;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.exception.RequestTimeoutException;
@@ -31,6 +32,8 @@ import org.apache.rocketmq.common.topic.TopicValidator;
 import org.apache.rocketmq.logging.InternalLogger;
 import org.apache.rocketmq.remoting.RPCHook;
 import org.apache.rocketmq.remoting.exception.RemotingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class is the entry point for applications intending to send messages. </p>
@@ -50,7 +53,7 @@ public class DefaultMQProducer extends ClientConfig implements MQProducer {
      * Wrapping internal implementations for virtually all methods presented in this class.
      */
     protected final transient DefaultMQProducerImpl defaultMQProducerImpl;
-    private final InternalLogger log = ClientLogger.getLog();
+    private final static Logger log = LoggerFactory.getLogger(DefaultMQProducer.class);
     private final Set<Integer> retryResponseCodes = new CopyOnWriteArraySet<Integer>(Arrays.asList(
             ResponseCode.TOPIC_NOT_EXIST,
             ResponseCode.SERVICE_NOT_AVAILABLE,

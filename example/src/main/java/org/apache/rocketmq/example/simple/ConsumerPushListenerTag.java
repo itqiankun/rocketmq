@@ -2,8 +2,6 @@
 package org.apache.rocketmq.example.simple;
 
 import com.alibaba.fastjson.JSONObject;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.rocketmq.client.QueryResult;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
@@ -12,15 +10,12 @@ import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * This example shows how to subscribe and consume messages using providing {@link DefaultMQPushConsumer}.
- */
 
 public class ConsumerPushListenerTag {
     private static final Logger logger = LoggerFactory.getLogger(ConsumerPushListenerTag.class);
     public static final String CONSUMER_GROUP = "please_rename_unique_group_name_4";
     public static final String DEFAULT_NAMESRVADDR = "127.0.0.1:9876";
-    public static final String TOPIC = "TopicTest";
+    public static final String TOPIC = "topic";
 
     public static void main(String[] args) throws MQClientException {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(CONSUMER_GROUP);

@@ -6,13 +6,16 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import org.apache.rocketmq.client.log.ClientLogger;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.logging.InternalLogger;
 import org.apache.rocketmq.common.protocol.body.ConsumerRunningInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DefaultMonitorListener implements MonitorListener {
     private final static String LOG_PREFIX = "[MONITOR] ";
     private final static String LOG_NOTIFY = LOG_PREFIX + " [NOTIFY] ";
-    private final InternalLogger log = ClientLogger.getLog();
+    private final static Logger log = LoggerFactory.getLogger(DefaultMonitorListener.class);
 
     public DefaultMonitorListener() {
     }

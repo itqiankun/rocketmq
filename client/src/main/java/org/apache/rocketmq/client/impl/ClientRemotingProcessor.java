@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.rocketmq.client.consumer.MQPullConsumerScheduleService;
 import org.apache.rocketmq.client.impl.factory.MQClientInstance;
 import org.apache.rocketmq.client.impl.producer.MQProducerInner;
 import org.apache.rocketmq.client.log.ClientLogger;
@@ -41,9 +42,11 @@ import org.apache.rocketmq.remoting.common.RemotingUtil;
 import org.apache.rocketmq.remoting.exception.RemotingCommandException;
 import org.apache.rocketmq.remoting.netty.NettyRequestProcessor;
 import org.apache.rocketmq.remoting.protocol.RemotingCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ClientRemotingProcessor implements NettyRequestProcessor {
-    private final InternalLogger log = ClientLogger.getLog();
+    private final static Logger log = LoggerFactory.getLogger(ClientRemotingProcessor.class);
     private final MQClientInstance mqClientFactory;
 
     public ClientRemotingProcessor(final MQClientInstance mqClientFactory) {

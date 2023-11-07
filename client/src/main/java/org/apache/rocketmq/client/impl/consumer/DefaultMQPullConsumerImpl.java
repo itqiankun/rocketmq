@@ -10,10 +10,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentMap;
 import org.apache.rocketmq.client.QueryResult;
 import org.apache.rocketmq.client.Validators;
-import org.apache.rocketmq.client.consumer.DefaultMQPullConsumer;
-import org.apache.rocketmq.client.consumer.MessageSelector;
-import org.apache.rocketmq.client.consumer.PullCallback;
-import org.apache.rocketmq.client.consumer.PullResult;
+import org.apache.rocketmq.client.consumer.*;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.store.LocalFileOffsetStore;
 import org.apache.rocketmq.client.consumer.store.OffsetStore;
@@ -50,6 +47,8 @@ import org.apache.rocketmq.common.sysflag.PullSysFlag;
 import org.apache.rocketmq.remoting.RPCHook;
 import org.apache.rocketmq.remoting.common.RemotingHelper;
 import org.apache.rocketmq.remoting.exception.RemotingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class will be removed in 2022, and a better implementation {@link DefaultLitePullConsumerImpl} is recommend to use
@@ -57,7 +56,7 @@ import org.apache.rocketmq.remoting.exception.RemotingException;
  */
 @Deprecated
 public class DefaultMQPullConsumerImpl implements MQConsumerInner {
-    private final InternalLogger log = ClientLogger.getLog();
+    private final static Logger log = LoggerFactory.getLogger(DefaultMQPullConsumerImpl.class);
     private final DefaultMQPullConsumer defaultMQPullConsumer;
     private final long consumerStartTimestamp = System.currentTimeMillis();
     private final RPCHook rpcHook;

@@ -1,5 +1,5 @@
 
-package org.apache.rocketmq.example.simple;
+package org.apache.rocketmq.example.simple.producer;
 
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;

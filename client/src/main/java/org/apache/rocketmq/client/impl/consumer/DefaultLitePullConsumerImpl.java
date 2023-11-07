@@ -3,11 +3,7 @@ package org.apache.rocketmq.client.impl.consumer;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.Validators;
-import org.apache.rocketmq.client.consumer.DefaultLitePullConsumer;
-import org.apache.rocketmq.client.consumer.MessageQueueListener;
-import org.apache.rocketmq.client.consumer.MessageSelector;
-import org.apache.rocketmq.client.consumer.PullResult;
-import org.apache.rocketmq.client.consumer.TopicMessageQueueChangeListener;
+import org.apache.rocketmq.client.consumer.*;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.store.LocalFileOffsetStore;
 import org.apache.rocketmq.client.consumer.store.OffsetStore;
@@ -40,6 +36,8 @@ import org.apache.rocketmq.common.sysflag.PullSysFlag;
 import org.apache.rocketmq.logging.InternalLogger;
 import org.apache.rocketmq.remoting.RPCHook;
 import org.apache.rocketmq.remoting.exception.RemotingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -63,7 +61,7 @@ import java.util.concurrent.TimeUnit;
 
 public class DefaultLitePullConsumerImpl implements MQConsumerInner {
 
-    private final InternalLogger log = ClientLogger.getLog();
+    private final static Logger log = LoggerFactory.getLogger(DefaultLitePullConsumerImpl.class);
 
     private final long consumerStartTimestamp = System.currentTimeMillis();
 

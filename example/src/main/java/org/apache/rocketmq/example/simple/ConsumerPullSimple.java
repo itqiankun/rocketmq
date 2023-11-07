@@ -1,6 +1,15 @@
 
 package org.apache.rocketmq.example.simple;
 
+import org.apache.rocketmq.client.consumer.DefaultMQPullConsumer;
+import org.apache.rocketmq.client.consumer.PullResult;
+import org.apache.rocketmq.client.consumer.store.ReadOffsetType;
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.common.message.MessageExt;
+import org.apache.rocketmq.common.message.MessageQueue;
+import org.apache.rocketmq.remoting.exception.RemotingException;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,46 +17,23 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-import com.alibaba.fastjson.JSONObject;
-import org.apache.rocketmq.client.consumer.DefaultMQPullConsumer;
-import org.apache.rocketmq.client.consumer.PullResult;
-import org.apache.rocketmq.client.consumer.rebalance.AllocateMessageQueueConsistentHash;
-import org.apache.rocketmq.client.consumer.store.ReadOffsetType;
-import org.apache.rocketmq.client.exception.MQBrokerException;
-import org.apache.rocketmq.client.exception.MQClientException;
-import org.apache.rocketmq.common.message.MessageExt;
-import org.apache.rocketmq.common.message.MessageQueue;
-import org.apache.rocketmq.common.protocol.body.ConsumerRunningInfo;
-import org.apache.rocketmq.remoting.exception.RemotingException;
-
 @SuppressWarnings("deprecation")
-public class ConsumerPull {
+public class ConsumerPullSimple {
 
     public static void main(String[] args) throws MQClientException {
-
         DefaultMQPullConsumer consumer = new DefaultMQPullConsumer("please_rename_unique_group_name_5");
         consumer.setNamesrvAddr("127.0.0.1:9876");
         Set<String> topics = new HashSet<>();
-        //You would better to register topics,It will use in rebalance when starting
         topics.add("topic");
         consumer.setRegisterTopics(topics);
         consumer.start();
-
-        ExecutorService executors = Executors.newFixedThreadPool(topics.size(), new ThreadFactory() {
-            @Override
-            public Thread newThread(Runnable r) {
-                return new Thread(r, "PullConsumerThread");
-            }
-        });
+        ExecutorService executors = Executors.newFixedThreadPool(topics.size(), r -> new Thread(r, "PullConsumerThread"));
         for (String topic : consumer.getRegisterTopics()) {
-
             executors.execute(new Runnable() {
-
                 public void doSomething(List<MessageExt> msgs) {
                     //do your business
                     System.out.println(msgs.size());
                 }
-
                 @Override
                 public void run() {
                     while (true) {
@@ -65,40 +51,17 @@ public class ConsumerPull {
                                     switch (pullResult.getPullStatus()) {
                                         case FOUND:
                                             List<MessageExt> msgs = pullResult.getMsgFoundList();
-
                                             if (msgs != null && !msgs.isEmpty()) {
                                                 this.doSomething(msgs);
-                                                //update offset to broker
                                                 consumer.updateConsumeOffset(messageQueue, pullResult.getNextBeginOffset());
-                                                //print pull tps
-                                                this.incPullTPS(topic, pullResult.getMsgFoundList().size());
                                             }
-                                            break;
-                                        case OFFSET_ILLEGAL:
-                                            consumer.updateConsumeOffset(messageQueue, pullResult.getNextBeginOffset());
-                                            break;
-                                        case NO_NEW_MSG:
-                                            Thread.sleep(1);
-                                            consumer.updateConsumeOffset(messageQueue, pullResult.getNextBeginOffset());
-                                            break;
-                                        case NO_MATCHED_MSG:
-                                            consumer.updateConsumeOffset(messageQueue, pullResult.getNextBeginOffset());
                                             break;
                                         default:
                                     }
-                                } catch (RemotingException e) {
-                                    e.printStackTrace();
-                                } catch (MQBrokerException e) {
-                                    e.printStackTrace();
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
-                        } catch (MQClientException e) {
-                            //reblance error
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -122,13 +85,7 @@ public class ConsumerPull {
                     }
                     return offset;
                 }
-
-                public void incPullTPS(String topic, int pullSize) {
-                    consumer.getDefaultMQPullConsumerImpl().getRebalanceImpl().getmQClientFactory()
-                            .getConsumerStatsManager().incPullTPS(consumer.getConsumerGroup(), topic, pullSize);
-                }
             });
-
         }
 //        executors.shutdown();
 //        consumer.shutdown();

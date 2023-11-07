@@ -14,6 +14,8 @@ import org.apache.rocketmq.common.protocol.header.QueryConsumerOffsetRequestHead
 import org.apache.rocketmq.common.protocol.header.UpdateConsumerOffsetRequestHeader;
 import org.apache.rocketmq.logging.InternalLogger;
 import org.apache.rocketmq.remoting.exception.RemotingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,7 +29,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * Remote storage implementation
  */
 public class RemoteBrokerOffsetStore implements OffsetStore {
-    private final static InternalLogger log = ClientLogger.getLog();
+    private final static Logger log = LoggerFactory.getLogger(RemoteBrokerOffsetStore.class);
     private final MQClientInstance mQClientFactory;
     private final String groupName;
     private ConcurrentMap<MessageQueue, AtomicLong> offsetTable =

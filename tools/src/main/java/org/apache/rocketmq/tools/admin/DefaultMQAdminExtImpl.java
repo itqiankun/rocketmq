@@ -30,6 +30,7 @@ import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.impl.MQClientManager;
 import org.apache.rocketmq.client.impl.factory.MQClientInstance;
 import org.apache.rocketmq.client.log.ClientLogger;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.AclConfig;
 import org.apache.rocketmq.common.KeyBuilder;
 import org.apache.rocketmq.common.MixAll;
@@ -100,6 +101,8 @@ import org.apache.rocketmq.tools.admin.common.AdminToolHandler;
 import org.apache.rocketmq.tools.admin.common.AdminToolResult;
 import org.apache.rocketmq.tools.admin.common.AdminToolsResultCodeEnum;
 import org.apache.rocketmq.tools.command.CommandUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DefaultMQAdminExtImpl implements MQAdminExt, MQAdminExtInner {
 
@@ -122,7 +125,7 @@ public class DefaultMQAdminExtImpl implements MQAdminExt, MQAdminExtInner {
         SYSTEM_GROUP_SET.add(MixAll.CID_SYS_RMQ_TRANS);
     }
 
-    private final InternalLogger log = ClientLogger.getLog();
+    private final static Logger log = LoggerFactory.getLogger(DefaultMQAdminExtImpl.class);
     private final DefaultMQAdminExt defaultMQAdminExt;
     private ServiceState serviceState = ServiceState.CREATE_JUST;
     private MQClientInstance mqClientInstance;

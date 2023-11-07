@@ -59,7 +59,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ConsumeMessageConcurrentlyServiceTest {
     private String consumerGroup;
-    private String topic = "FooBar";
+    private String topic = "topic";
     private String brokerName = "BrokerA";
     private MQClientInstance mQClientFactory;
 

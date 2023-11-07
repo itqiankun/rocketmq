@@ -26,4 +26,6 @@ public class ScheduledMessageConsumer {
         });
         consumer.start();
     }
+
+
 }

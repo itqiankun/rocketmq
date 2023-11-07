@@ -276,6 +276,7 @@ public class MQClientInstance {
 
         this.scheduledExecutorService.scheduleAtFixedRate(() -> {
             try {
+                // 这里为了debug，所以在测试发送的时候，可以先把这里的更新topic给注释掉，防止debug不好理解
                 MQClientInstance.this.updateTopicRouteInfoFromNameServer();
             } catch (Exception e) {
                 log.error("ScheduledTask updateTopicRouteInfoFromNameServer exception", e);
@@ -291,8 +292,10 @@ public class MQClientInstance {
             }
         }, 1000, this.clientConfig.getHeartbeatBrokerInterval(), TimeUnit.MILLISECONDS);
 
+
         this.scheduledExecutorService.scheduleAtFixedRate(() -> {
             try {
+                // 定时更新所有的`MessageQueue`的`offset`
                 MQClientInstance.this.persistAllConsumerOffset();
             } catch (Exception e) {
                 log.error("ScheduledTask persistAllConsumerOffset exception", e);
