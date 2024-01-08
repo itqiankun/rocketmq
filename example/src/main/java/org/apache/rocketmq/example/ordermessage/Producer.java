@@ -31,6 +31,7 @@ public class Producer {
                 SendResult sendResult = producer.send(msg, new MessageQueueSelector() {
                     @Override
                     public MessageQueue select(List<MessageQueue> mqs, Message msg, Object arg) {
+                        // 这里的`arg`就是`producer.send`的第3个入参`orderId`
                         Integer id = (Integer) arg;
                         int index = id % mqs.size();
                         return mqs.get(index);
