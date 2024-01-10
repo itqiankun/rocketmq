@@ -1,7 +1,5 @@
+package org.apache.rocketmq.example.simple.consumer.messageMiss.OneConsumerTwoTopicMissMessage;
 
-package org.apache.rocketmq.example.simple;
-
-import java.util.List;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -10,17 +8,19 @@ import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.MessageExt;
 
-public class ConsumerPushListenerMessages {
+import java.util.List;
 
+/**
+ * author: ma_qiankun
+ * date:  2023/12/3
+ **/
+public class ConsumerOne {
     public static void main(String[] args) throws InterruptedException, MQClientException {
-        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("CID_JODIE_1");
-        consumer.subscribe("TopicTest", "*");
+        DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("OneConsumerTwoTopicMissMessage");
+        consumer.subscribe("topicOne", "*");
         consumer.setNamesrvAddr( "127.0.0.1:9876");
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
-        //wrong time format 2017_0422_221800
-        consumer.setConsumeTimestamp("20181109221800");
         consumer.registerMessageListener(new MessageListenerConcurrently() {
-
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
                 System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);

@@ -28,10 +28,14 @@ public class Producer {
                 Message msg =
                     new Message("TopicTest", tags[i % tags.length], "KEY" + i,
                         ("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET));
-                SendResult sendResult = producer.send(msg, (mqs, msg1, arg) -> {
-                    Integer orderIdTemp = (Integer) arg;
-                    int index = orderIdTemp % mqs.size();
-                    return mqs.get(index);
+                SendResult sendResult = producer.send(msg, new MessageQueueSelector() {
+                    @Override
+                    public MessageQueue select(List<MessageQueue> mqs, Message msg, Object arg) {
+                        // 这里的`arg`就是`producer.send`的第3个入参`orderId`
+                        Integer id = (Integer) arg;
+                        int index = id % mqs.size();
+                        return mqs.get(index);
+                    }
                 }, orderId);
 
                 System.out.printf("%s%n", sendResult);

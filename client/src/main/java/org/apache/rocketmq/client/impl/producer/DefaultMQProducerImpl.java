@@ -615,7 +615,7 @@ public class DefaultMQProducerImpl implements MQProducerInner {
             for (; times < timesTotal; times++) {
                 String lastBrokerName = null == mq ? null : mq.getBrokerName();
                 MessageQueue mqSelected = this.selectOneMessageQueue(topicPublishInfo, lastBrokerName);
-//                log.info("mqSelected info:{}", JSONObject.toJSON(mqSelected));
+                log.info("retry times:{}", times);
                 if (mqSelected != null) {
                     mq = mqSelected;
                     brokersSent[times] = mq.getBrokerName();

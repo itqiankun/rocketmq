@@ -12,7 +12,7 @@
         <appender-ref ref="DefaultAppender"/>
     </logger>
 
-    <logger name="org.apache.rocketmq.client" level="info"  additivity="false">
+    <logger name="org.apache.rocketmq.client" level="off"  additivity="false">
         <appender-ref ref="DefaultAppender"/>
     </logger>
 
